@@ -6,10 +6,12 @@ import akka.actor.ActorSystem;
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
+import akka.http.javadsl.model.ContentTypes;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
+import akka.util.ByteString;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -26,8 +28,11 @@ public class AkkaStream {
         final ActorMaterializer materializer = ActorMaterializer.create(system);
         //<вызов метода которому передаем Http, ActorSystem и ActorMaterializer>;
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = Flow.of(HttpRequest.class).map(
-                f -> {
-                    
+                req -> {
+                    if (req.getUri().path().equals("/")){
+                        return HttpResponse.create().withEntity(ContentTypes.TEXT_HTML_UTF8, ByteString.fromString("<>"))
+                    }
+
                 }).mapAsync().ask(controlActor, new GetMSG(), 5000);
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
