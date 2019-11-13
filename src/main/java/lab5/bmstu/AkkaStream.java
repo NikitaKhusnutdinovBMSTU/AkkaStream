@@ -6,10 +6,7 @@ import akka.actor.ActorSystem;
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
-import akka.http.javadsl.model.ContentTypes;
-import akka.http.javadsl.model.HttpRequest;
-import akka.http.javadsl.model.HttpResponse;
-import akka.http.javadsl.model.StatusCodes;
+import akka.http.javadsl.model.*;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import akka.util.ByteString;
@@ -30,18 +27,22 @@ public class AkkaStream {
         //<вызов метода которому передаем Http, ActorSystem и ActorMaterializer>;
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = Flow.of(HttpRequest.class).map(
                 req -> {
-                    if (req.getUri().path().equals("/")){
-                        return HttpResponse.create().withEntity(ContentTypes.TEXT_HTML_UTF8, ByteString.fromString("<html><body>Hello world!</body></html>"));
+                    if(req.method() == HttpMethods.GET) {
+                        if (req.getUri().path().equals("/")) {
+                            return HttpResponse.create().withEntity(ContentTypes.TEXT_HTML_UTF8, ByteString.fromString("<html><body>Hello world!</body></html>"));
 
+                        }
+                        if (req.getUri().path().equals("/test")) {
+                            return HttpResponse.create().withEntity(ByteString.fromString("TEST WORKS!"));
+                        } else {
+                            req.discardEntityBytes(materializer);
+                            return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
+                        }
+                    }else{
+                        if (req.getUri().path().equals("/")){
+                            return HttpResponse.create().withEntity(ByteString.fromString("IT'S THE POST DUDE"));
+                        }
                     }
-                    if (req.getUri().path().equals("/test")){
-                        return HttpResponse.create().withEntity(ByteString.fromString("TEST WORKS!"));
-                    }
-                    else{
-                        req.discardEntityBytes(materializer);
-                        return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
-                    }
-
                 });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
