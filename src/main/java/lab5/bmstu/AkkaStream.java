@@ -15,6 +15,7 @@ import java.util.concurrent.CompletionStage;
 
 public class AkkaStream {
     public static void main(String[] args) throws IOException {
+
         System.out.println("start!");
         ActorSystem system = ActorSystem.create("routes");
         final Http http = Http.get(system);
