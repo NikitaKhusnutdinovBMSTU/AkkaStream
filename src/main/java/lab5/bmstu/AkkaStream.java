@@ -9,6 +9,7 @@ import akka.http.javadsl.ServerBinding;
 import akka.http.javadsl.model.ContentTypes;
 import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
+import akka.http.javadsl.model.StatusCodes;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import akka.util.ByteString;
@@ -30,10 +31,18 @@ public class AkkaStream {
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = Flow.of(HttpRequest.class).map(
                 req -> {
                     if (req.getUri().path().equals("/")){
-                        return HttpResponse.create().withEntity(ContentTypes.TEXT_HTML_UTF8, ByteString.fromString("<>"))
+                        return HttpResponse.create().withEntity(ContentTypes.TEXT_HTML_UTF8, ByteString.fromString("<html><body>Hello world!</body></html>"));
+
+                    }
+                    if (req.getUri().path().equals("/test")){
+                        return HttpResponse.create().withEntity(ByteString.fromString("TEST WORKS!"));
+                    }
+                    else{
+                        req.discardEntityBytes(materializer);
+                        return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
                     }
 
-                }).mapAsync().ask(controlActor, new GetMSG(), 5000);
+                });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
                 ConnectHttp.toHost("localhost", 8080),
