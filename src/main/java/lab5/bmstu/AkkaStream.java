@@ -39,13 +39,8 @@ public class AkkaStream {
                             return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
                         }
                     }else{
-                        if (req.getUri().path().equals("/")){
-                            return HttpResponse.create().withEntity(ByteString.fromString("IT'S THE POST DUDE"));
-                        }
-                        else {
                             req.discardEntityBytes(materializer);
                             return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
-                        }
                     }
                 });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
