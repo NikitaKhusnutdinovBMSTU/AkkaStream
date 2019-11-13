@@ -9,6 +9,7 @@ import akka.http.javadsl.model.HttpRequest;
 import akka.http.javadsl.model.HttpResponse;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.concurrent.CompletionStage;
@@ -22,7 +23,7 @@ public class AkkaStream {
         final ActorMaterializer materializer = ActorMaterializer.create(system);
         //<вызов метода которому передаем Http, ActorSystem и ActorMaterializer>;
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = Flow.of(HttpRequest.class).map(f -> {
-            
+            new Pair<>
         });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
