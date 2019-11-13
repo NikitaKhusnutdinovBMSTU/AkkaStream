@@ -1,6 +1,7 @@
 package lab5.bmstu;
 
 import akka.NotUsed;
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
@@ -15,6 +16,8 @@ import java.io.IOException;
 import java.util.concurrent.CompletionStage;
 
 public class AkkaStream {
+    private static ActorRef controlActor;
+
     public static void main(String[] args) throws IOException {
 
         System.out.println("start!");
@@ -23,7 +26,7 @@ public class AkkaStream {
         final ActorMaterializer materializer = ActorMaterializer.create(system);
         //<вызов метода которому передаем Http, ActorSystem и ActorMaterializer>;
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = Flow.of(HttpRequest.class).map(
-                f -> System.out.println(f.getUri())).mapAsync();
+                f -> System.out.println(f.getUri())).mapAsync().ask(controlActor, new GetMSG(), 5000);
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
                 ConnectHttp.toHost("localhost", 8080),
