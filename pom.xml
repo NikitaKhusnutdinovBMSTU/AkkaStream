@@ -80,12 +80,6 @@
             <artifactId>akka-http-xml_2.12</artifactId>
             <version>${akka-http.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>7.0.0-beta1</version>
-            <scope>compile</scope>
-        </dependency>
 
         <dependency>
             <groupId>org.asynchttpclient</groupId>
