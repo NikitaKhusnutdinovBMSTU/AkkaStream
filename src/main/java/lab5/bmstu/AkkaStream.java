@@ -27,7 +27,7 @@ public class AkkaStream {
         //<вызов метода которому передаем Http, ActorSystem и ActorMaterializer>;
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = Flow.of(HttpRequest.class).map(
                 f -> {
-                    HttpRequest.GET(f.)
+                    
                 }).mapAsync().ask(controlActor, new GetMSG(), 5000);
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
