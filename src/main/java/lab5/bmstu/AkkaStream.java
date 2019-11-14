@@ -49,7 +49,7 @@ public class AkkaStream {
                                 ).mapAsync(1, pair -> {
                                     Patterns.ask(controlActor, new GetMSG(pair), 5000);
                                 }).map(response -> {
-                                    HttpResponse.create().withEntity(ByteString.fromString("answe "))
+                                    HttpResponse.create().withEntity(ByteString.fromString("answer " + response));
                                 });
 
 
