@@ -72,18 +72,17 @@ public class AkkaStream {
                                         );
 
                                 CompletionStage<HttpResponse> result = source.via(testSink).toMat(Sink.last(), Keep.right()).run(materializer);
-                                return result.toCompletableFuture().get();
+                                return HttpResponse.create().withEntity(ByteString.fromString(result.toCompletableFuture().get().toString()));
                             } catch (Exception e) {
                                 return HttpResponse.create().withEntity(ByteString.fromString("Some exception happened"));
                             }
 
-                            return HttpResponse.create().withEntity(ContentTypes.TEXT_HTML_UTF8, ByteString.fromString("<html><body>Hello world!</body></html>"));
-
                         }
-                    } else {
-                        req.discardEntityBytes(materializer);
-                        return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
                     }
+
+                    req.discardEntityBytes(materializer);
+                    return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
+
                 });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
