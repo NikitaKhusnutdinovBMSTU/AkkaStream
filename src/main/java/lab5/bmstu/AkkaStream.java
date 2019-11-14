@@ -17,7 +17,9 @@ import akka.japi.Pair;
 import scala.concurrent.Future;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletionStage;
 
 public class AkkaStream {
@@ -48,7 +50,13 @@ public class AkkaStream {
                                 Pair<String, Integer> data = new Pair<>(url, countInteger);
                                 Flow<Pair<String, Integer>, HttpResponse, NotUsed> testSink = Flow
                                         .<Pair<String, Integer>>create()
-                                        .mapConcat();
+                                        .mapConcat(p -> {
+                                            List<String> list = new ArrayList<>();
+                                            for(int i = 0; i < p.second(); i++){
+                                                list.add(p.first());
+                                            }
+                                            return list;
+                                        }).mapAsync();
 
 
                             } catch(Exception e){
