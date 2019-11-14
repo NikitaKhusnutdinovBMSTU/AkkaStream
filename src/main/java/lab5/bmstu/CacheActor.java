@@ -15,7 +15,7 @@ public class CacheActor extends AbstractActor {
 
         return ReceiveBuilder.create().match(GetMSG.class,
                 req -> {
-                    
+
                 }).build();
     }
 }

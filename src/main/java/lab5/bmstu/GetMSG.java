@@ -9,6 +9,9 @@ public class GetMSG {
         this.msgPair = pair;
     }
 
+    public Pair<String, Integer> getMsgPair(){
+        return msgPair;
+    }
     public String getURL(){
         return msgPair.getKey();
     }
