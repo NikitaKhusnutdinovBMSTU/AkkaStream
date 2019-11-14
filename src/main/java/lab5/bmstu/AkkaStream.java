@@ -73,7 +73,7 @@ public class AkkaStream {
                                                                         CompletableFuture<Long> future = CompletableFuture.supplyAsync(() ->
                                                                                 System.nanoTime()
                                                                         ).thenCompose(start -> CompletableFuture.supplyAsync(() -> {
-                                                                            ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.toString()).execute();
+                                                                            ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.getUri().toString()).execute();
                                                                             try {
                                                                                 Response response = whenResponse.get();
                                                                             } catch (InterruptedException | ExecutionException e) {
