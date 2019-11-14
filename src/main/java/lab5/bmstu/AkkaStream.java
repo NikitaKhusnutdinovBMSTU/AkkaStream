@@ -10,6 +10,7 @@ import akka.http.javadsl.model.*;
 import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
+import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Source;
 import akka.util.ByteString;
 import javafx.util.Pair;
@@ -45,15 +46,10 @@ public class AkkaStream {
                             try{
                                 Integer countInteger = Integer.parseInt(count);
                                 Pair<String, Integer> data = new Pair<>(url, countInteger);
-                                Source<Pair<String, Integer>, NotUsed> source = Source.from(Collections.singletonList(data));
-                                Flow<Pair<String, Integer>, HttpResponse, NotUsed> testFlow = Flow.<Pair<String, Integer>>create().mapAsync(
-                                        1,
-                                        pair -> {
-                                            Future<Object> result = Patterns.ask(controlActor, new GetMSG(pair), 5000);
-                                        }
-                                ).map(response -> {
-                                    HttpResponse.create().withEntity(ByteString.fromString("answer " + response));
-                                });
+                                CompletionStage<Long> completionStage = Source
+                                        .from(Collections.singletonList(data))
+                                        .toMat(testSink, Keep.right())
+                                        .run(materializer);
 
 
                             } catch(Exception e){
