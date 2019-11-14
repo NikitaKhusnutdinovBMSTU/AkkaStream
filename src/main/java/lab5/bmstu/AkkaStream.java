@@ -107,11 +107,12 @@ public class AkkaStream {
                                                                                 System.currentTimeMillis()
                                                                         ).thenCompose(start -> CompletableFuture.supplyAsync(() -> {
                                                                             ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.getUri().toString()).execute();
-//                                                                            try {
-//                                                                                Response response = whenResponse.get();
-//                                                                            } catch (InterruptedException | ExecutionException e) {
-//                                                                                e.printStackTrace();
-//                                                                            }
+                                                                            // Counting time
+                                                                            try {
+                                                                                Response response = whenResponse.get();
+                                                                            } catch (InterruptedException | ExecutionException e) {
+                                                                                e.printStackTrace();
+                                                                            }
                                                                             return System.currentTimeMillis() - start;
                                                                         }));
                                                                         return future;

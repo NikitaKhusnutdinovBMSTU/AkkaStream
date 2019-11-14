@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="76111c3d-7260-4f8d-9042-cb77df60758b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab5/bmstu/CacheActor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab5/bmstu/CacheActor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab5/bmstu/GetMSG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab5/bmstu/GetMSG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab5/bmstu/PutMSG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab5/bmstu/PutMSG.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -40,13 +36,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="7103" />
+          <entry key="java" value="7121" />
           <entry key="xml" value="33" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="7103" />
+          <entry key="JAVA" value="7121" />
           <entry key="XML" value="33" />
         </counts>
       </usages-collector>
@@ -66,8 +62,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
-              <caret line="110" column="95" selection-start-line="110" selection-start-column="95" selection-end-line="110" selection-end-column="95" />
+            <state relative-caret-position="161">
+              <caret line="109" column="92" selection-start-line="109" selection-start-column="92" selection-end-line="109" selection-end-column="92" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -315,15 +311,15 @@
       <updated>1573637642556</updated>
       <workItem from="1573637647647" duration="10586000" />
       <workItem from="1573740354119" duration="19678000" />
-      <workItem from="1573764221904" duration="621000" />
+      <workItem from="1573764221904" duration="995000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30885000" />
+    <option name="totallyTimeSpent" value="31259000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="63" y="79" width="1244" height="594" extended-state="0" />
+    <frame x="61" y="63" width="1244" height="594" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18718801" />
@@ -431,8 +427,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="110" column="95" selection-start-line="110" selection-start-column="95" selection-end-line="110" selection-end-column="95" />
+        <state relative-caret-position="161">
+          <caret line="109" column="92" selection-start-line="109" selection-start-column="92" selection-end-line="109" selection-end-column="92" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
