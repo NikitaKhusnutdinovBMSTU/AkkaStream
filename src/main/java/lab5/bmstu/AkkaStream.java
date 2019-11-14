@@ -14,7 +14,6 @@ import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
 import akka.util.ByteString;
 import akka.japi.Pair;
-import com.sun.xml.internal.ws.util.CompletedFuture;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Response;
 import scala.util.Try;
