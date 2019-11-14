@@ -20,7 +20,9 @@ import scala.util.Try;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.concurrent.ExecutionException;
 
 import static org.asynchttpclient.Dsl.asyncHttpClient;
 
@@ -66,11 +68,18 @@ public class AkkaStream {
                                                     .toMat(
                                                             Flow.<Pair<HttpRequest, Integer>>create()
                                                                     .mapConcat(p -> Collections.nCopies(p.second(), p.first()))
-                                                                    .mapAsync(1, req2 ->{
-                                                                        long start = System.nanoTime();
-                                                                        ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.toString()).execute();
-                                                                        Response response = whenResponse.get();
-                                                                        long elapsedTime = System.nanoTime() - start;
+                                                                    .mapAsync(1, req2 -> {
+                                                                        CompletableFuture<Long> future = CompletableFuture.supplyAsync(() -> {
+                                                                            return System.nanoTime();
+                                                                        }).thenCompose(start -> {
+                                                                            ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.toString()).execute();
+                                                                            try {
+                                                                                Response response = whenResponse.get();
+                                                                            } catch (InterruptedException | ExecutionException e) {
+
+                                                                            }
+                                                                            return "kek";
+                                                                        });
                                                                     })
                                                                     .map(req2 -> new Pair<>(req2, System.currentTimeMillis())).via(httpClient).toMat(fold, Keep.right()), Keep.right()).run(materializer);
                                         }).map(
