@@ -47,7 +47,7 @@ public class AkkaStream {
                                 Flow<Pair<String, Integer>, HttpResponse, NotUsed> testFlow = Flow.<Pair<String, Integer>>create().map(
                                         pair -> new Pair<>(HttpRequest.create().withUri(pair.getKey()), pair.getValue())
                                 ).mapAsync(1, pair -> {
-                                    Patterns.ask(controlActor, pair, )
+                                    Patterns.ask(controlActor, new GetMSG(pair), 5000);
                                 })
 
 
