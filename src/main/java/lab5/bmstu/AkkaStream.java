@@ -43,7 +43,7 @@ public class AkkaStream {
     private static final String EMPTY_STRING = "";
     private static final String URL_ERROR = "URL PARAMETER IS EMPTY";
     private static final String COUNT_ERROR = "COUNT PARAMETER IS EMPTY";
-    private static final String FINAL_ANSWER = "Medium response is ->";
+    private static final String FINAL_ANSWER = "Medium response is in MS ->";
     private static final String NUMBER_ERROR = "NUMBER EXCEPTION";
     private static final String PATH_ERROR = "BAD PATH";
     private static final String GET_ERROR = "ONLY GET METHOD!";
