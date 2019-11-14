@@ -50,9 +50,9 @@ public class AkkaStream {
                                         pair -> {
                                             Future<Object> result = Patterns.ask(controlActor, new GetMSG(pair), 5000);
                                         }
-                                ).thenCompose().map(response -> {
+                                ).map(response -> {
                                     HttpResponse.create().withEntity(ByteString.fromString("answer " + response));
-                                });
+                                }).then;
 
 
                             } catch(Exception e){
