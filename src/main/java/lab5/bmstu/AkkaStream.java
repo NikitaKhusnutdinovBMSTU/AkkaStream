@@ -15,6 +15,7 @@ import akka.stream.javadsl.Source;
 import akka.util.ByteString;
 import akka.japi.Pair;
 import scala.util.Try;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.concurrent.CompletionStage;
@@ -52,10 +53,11 @@ public class AkkaStream {
                                         .map(pair -> new Pair<>(HttpRequest.create().withUri((pair.first())), pair.second()))
                                         .mapAsync(1, pair -> {
                                             Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool(materializer);
-                                            Sink<Pair<Try<HttpResponse>, Long>, CompletionStage<Integer>> fold = Sink.fold(0, (ac, el) -> {
-                                                int responseTime = (int) (System.currentTimeMillis() - el.second());
-                                                return ac + responseTime;
-                                            });
+                                            Sink<Pair<Try<HttpResponse>, Long>, CompletionStage<Integer>> fold = Sink
+                                                    .fold(0, (ac, el) -> {
+                                                        int responseTime = (int) (System.currentTimeMillis() - el.second());
+                                                        return ac + responseTime;
+                                                    });
                                             return Source.from(Collections.singletonList(pair))
                                                     .toMat(
                                                             Flow.<Pair<HttpRequest, Integer>>create()
@@ -63,7 +65,7 @@ public class AkkaStream {
                                                                     .map(req2 -> new Pair<>(req2, System.currentTimeMillis())).via(httpClient).toMat(fold, Keep.right()), Keep.right()).run(materializer);
                                         }).map(
                                                 sum -> {
-                                                    Double middleValue = (double) sum/ (double) countInteger;
+                                                    Double middleValue = (double) sum / (double) countInteger;
                                                     return HttpResponse.create().withEntity(ByteString.fromString("response is " + middleValue.toString()));
                                                 }
                                         );
