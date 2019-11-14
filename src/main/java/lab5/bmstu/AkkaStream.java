@@ -30,9 +30,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AkkaStream {
     private static ActorRef controlActor;
+
 
     public static void main(String[] args) throws IOException {
 
