@@ -65,7 +65,7 @@ public class AkkaStream {
                                 Flow<Pair<String, Integer>, HttpResponse, NotUsed> testSink = Flow.<Pair<String, Integer>>create()
                                         .map(pair -> new Pair<>(HttpRequest.create().withUri(pair.first()), pair.second()))
                                         .mapAsync(1, pair -> {
-                                            
+
                                             //Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
                                             Sink<Long, CompletionStage<Integer>> fold = Sink
                                                     .fold(0, (ac, el) -> {
