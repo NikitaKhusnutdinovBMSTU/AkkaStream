@@ -52,7 +52,7 @@ public class AkkaStream {
                                         .<Pair<String, Integer>>create()
                                         .map(pair -> new Pair<>(HttpRequest.create().withUri((pair.first())), pair.second()))
                                         .mapAsync(1, pair -> {
-                                            Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool(materializer);
+                                            Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
                                             Sink<Pair<Try<HttpResponse>, Long>, CompletionStage<Integer>> fold = Sink
                                                     .fold(0, (ac, el) -> {
                                                         int responseTime = (int) (System.currentTimeMillis() - el.second());
