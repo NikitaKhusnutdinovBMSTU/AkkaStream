@@ -64,7 +64,7 @@ public class AkkaStream {
                             try {
                                 Integer countInteger = Integer.parseInt(count);
                                 Pair<String, Integer> data = new Pair<>(url, countInteger);
-
+                                boolean flag = false;
                                 Source<Pair<String, Integer>, NotUsed> source = Source.from(Collections.singletonList(data));
 
                                 Flow<Pair<String, Integer>, HttpResponse, NotUsed> testSink = Flow.<Pair<String, Integer>>create()
@@ -110,7 +110,6 @@ public class AkkaStream {
                                                                     .toMat(fold, Keep.right()), Keep.right()).run(materializer);
                                         }).map(
                                                 sum -> {
-                                                    
                                                     Double middleValue = (double) sum / (double) countInteger;
                                                     return HttpResponse.create().withEntity(ByteString.fromString("response is " + middleValue.toString()));
                                                 }

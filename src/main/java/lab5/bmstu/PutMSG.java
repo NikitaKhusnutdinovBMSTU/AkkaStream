@@ -5,7 +5,7 @@ import javafx.util.Pair;
 public class PutMSG {
     private Pair<String, Pair<Integer, Integer>> msg;
 
-    public PutMSG(akka.japi.Pair<String, akka.japi.Pair<Integer, Integer>> msg){
+    public PutMSG(Pair<String, Pair<Integer, Integer>> msg){
         this.msg = msg;
     }
 
