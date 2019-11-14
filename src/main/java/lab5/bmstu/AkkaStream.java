@@ -9,10 +9,12 @@ import akka.http.javadsl.ServerBinding;
 import akka.http.javadsl.model.*;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
+import akka.stream.javadsl.Source;
 import akka.util.ByteString;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.concurrent.CompletionStage;
 
 public class AkkaStream {
@@ -41,7 +43,10 @@ public class AkkaStream {
                             try{
                                 Integer countInteger = Integer.parseInt(count);
                                 Pair<String, Integer> data = new Pair<>(url, countInteger);
+                                Source<Pair<String, Integer>, NotUsed> source = Source.from(Collections.singletonList(data));
 
+                            } catch(Exception e){
+                                return HttpResponse.create().withEntity(ByteString.fromString("Some exception happened"));
                             }
 
                             return HttpResponse.create().withEntity(ContentTypes.TEXT_HTML_UTF8, ByteString.fromString("<html><body>Hello world!</body></html>"));
