@@ -65,6 +65,7 @@ public class AkkaStream {
                                 Flow<Pair<String, Integer>, HttpResponse, NotUsed> testSink = Flow.<Pair<String, Integer>>create()
                                         .map(pair -> new Pair<>(HttpRequest.create().withUri(pair.first()), pair.second()))
                                         .mapAsync(1, pair -> {
+                                            
                                             //Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
                                             Sink<Long, CompletionStage<Integer>> fold = Sink
                                                     .fold(0, (ac, el) -> {
@@ -101,15 +102,15 @@ public class AkkaStream {
                                 return result.toCompletableFuture().get();
                             } catch (NumberFormatException e) {
                                 e.printStackTrace();
-                                return HttpResponse.create().withEntity(ByteString.fromString("exception is"));
+                                return HttpResponse.create().withEntity(ByteString.fromString("NUMBER EXCEPTION"));
                             }
                         }else{
                             req.discardEntityBytes(materializer);
-                            return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
+                            return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("BAD PATH");
                         }
                     }else{
                         req.discardEntityBytes(materializer);
-                        return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
+                        return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("GET ONLY");
                     }
                 });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
