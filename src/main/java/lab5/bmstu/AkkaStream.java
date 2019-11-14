@@ -18,8 +18,10 @@ import akka.stream.javadsl.Source;
 import akka.japi.Pair;
 import akka.util.ByteString;
 import org.asynchttpclient.Response;
+import scala.concurrent.Await;
 import scala.concurrent.Future;
 import org.asynchttpclient.*;
+import scala.concurrent.duration.Duration;
 import scala.util.Try;
 import static org.asynchttpclient.Dsl.*;
 import static org.asynchttpclient.Dsl.asyncHttpClient;
@@ -75,7 +77,7 @@ public class AkkaStream {
                                                             5000
                                                     );
 
-                                            int value = (int)Await.r
+                                            int value = (int) Await.result(potentialResult, Duration.create(1, TimeDu))
 
                                             //Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
                                             Sink<Long, CompletionStage<Integer>> fold = Sink
