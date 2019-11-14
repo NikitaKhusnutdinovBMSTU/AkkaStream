@@ -61,7 +61,6 @@ public class AkkaStream {
         final ActorMaterializer materializer = ActorMaterializer.create(system);
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = Flow.of(HttpRequest.class).map(
                 req -> {
-
                     if (req.method() == HttpMethods.GET) {
                         if (req.getUri().path().equals(HOME_DIR)) {
                             String url = req.getUri().query().get(TEST_URL).orElse(EMPTY_STRING);
@@ -92,7 +91,7 @@ public class AkkaStream {
                                             if (value != -1) {
                                                 return CompletableFuture.completedFuture(value);
                                             }
-
+                                            // fold for counting all time
                                             Sink<Long, CompletionStage<Integer>> fold = Sink
                                                     .fold(0, (ac, el) -> {
                                                         int testEl = (int) (0 + el);
