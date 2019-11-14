@@ -1,11 +1,8 @@
 package lab5.bmstu;
 
 import akka.actor.AbstractActor;
-import akka.actor.Actor;
 import akka.actor.ActorRef;
 import akka.japi.pf.ReceiveBuilder;
-import javafx.util.Pair;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,9 +28,9 @@ public class CacheActor extends AbstractActor {
                         PutMSG.class,
                         msg -> {
                             Map<Integer, Integer> temp;
-                            if(data.containsKey(msg.getURL())){
+                            if (data.containsKey(msg.getURL())) {
                                 temp = data.get(msg.getURL());
-                            }else{
+                            } else {
                                 temp = new HashMap<>();
                             }
                             temp.put(msg.getCount(), msg.getTime());
