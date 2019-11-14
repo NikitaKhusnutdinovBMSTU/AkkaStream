@@ -13,6 +13,7 @@ import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Source;
 import akka.util.ByteString;
 import javafx.util.Pair;
+import scala.concurrent.Future;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -44,11 +45,12 @@ public class AkkaStream {
                             try{
                                 Integer countInteger = Integer.parseInt(count);
                                 Pair<String, Integer> data = new Pair<>(url, countInteger);
-                                Flow<Pair<String, Integer>, HttpResponse, NotUsed> testFlow = Flow.<Pair<String, Integer>>create().map(
-                                        pair -> new Pair<>(HttpRequest.create().withUri(pair.getKey()), pair.getValue())
-                                ).mapAsync(1, pair -> {
-                                    Patterns.ask(controlActor, new GetMSG(pair), 5000);
-                                }).map(response -> {
+                                Flow<Pair<String, Integer>, HttpResponse, NotUsed> testFlow = Flow.<Pair<String, Integer>>create().mapAsync(
+                                        1,
+                                        pair -> {
+                                            Patterns.ask(controlActor, new GetMSG(pair), 5000);
+                                        }
+                                ).map(response -> {
                                     HttpResponse.create().withEntity(ByteString.fromString("answer " + response));
                                 });
 

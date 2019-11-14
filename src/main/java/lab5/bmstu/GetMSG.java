@@ -6,7 +6,7 @@ public class GetMSG {
     Pair<String, Integer> msgPair;
 
     public GetMSG(Pair<String, Integer> pair){
-        this.msgPair = new Pair<>(pair.getKey(), pair.getValue());
+        this.msgPair = pair;
     }
 
     public String getURL(){
