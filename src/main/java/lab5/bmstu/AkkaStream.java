@@ -75,7 +75,7 @@ public class AkkaStream {
                                                             5000
                                                     );
 
-                                            potentialResult.value();
+                                            int value = (int)Await.r
 
                                             //Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
                                             Sink<Long, CompletionStage<Integer>> fold = Sink
