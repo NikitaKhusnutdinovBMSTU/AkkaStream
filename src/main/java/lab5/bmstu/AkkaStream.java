@@ -34,8 +34,18 @@ import org.slf4j.LoggerFactory;
 public class AkkaStream {
     private static ActorRef controlActor;
     private static final Logger logger = LoggerFactory.getLogger(AkkaStream.class);
-
-    public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
+    private static final String ;
+    private static final String
+    private static final String
+    private static final String
+    private static final String
+    private static final String
+    private static final String
+    private static final String
+    private static final String
+    private static final String
+    private static final String
+    public static void main(String[] args) throws IOException {
 
         System.out.println("start!");
         ActorSystem system = ActorSystem.create("routes");
@@ -92,11 +102,11 @@ public class AkkaStream {
                                                                                 System.currentTimeMillis()
                                                                         ).thenCompose(start -> CompletableFuture.supplyAsync(() -> {
                                                                             ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.getUri().toString()).execute();
-                                                                            //try {
+                                                                            try {
                                                                                 Response response = whenResponse.get();
-                                                                           // } catch (InterruptedException | ExecutionException e) {
-                                                                           //     e.printStackTrace();
-                                                                           // }
+                                                                            } catch (InterruptedException | ExecutionException e) {
+                                                                                e.printStackTrace();
+                                                                            }
                                                                             return System.currentTimeMillis() - start;
                                                                         }));
                                                                         return future;
