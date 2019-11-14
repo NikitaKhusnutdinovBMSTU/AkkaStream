@@ -7,7 +7,6 @@ import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
 import akka.http.javadsl.model.*;
-import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
@@ -15,8 +14,6 @@ import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
 import akka.util.ByteString;
 import akka.japi.Pair;
-import com.sun.tools.corba.se.idl.constExpr.Not;
-import scala.concurrent.Future;
 import scala.util.Try;
 
 import java.io.IOException;
