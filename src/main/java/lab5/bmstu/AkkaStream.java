@@ -27,11 +27,22 @@ public class AkkaStream {
         //<вызов метода которому передаем Http, ActorSystem и ActorMaterializer>;
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = Flow.of(HttpRequest.class).map(
                 req -> {
-                    System.out.println("EKK");
+
                     if(req.method() == HttpMethods.GET) {
                         if (req.getUri().path().equals("/")) {
-                            String URL = req.getUri().query().get("testUrl").get();
-                            int COUNT = Integer.parseInt(req.getUri().query().get("count").get());
+                            String URL = req.getUri().query().get("testUrl").orElse("");
+                            String COUNT = req.getUri().query().get("count").orElse("");
+                            if(URL.isEmpty()){
+                                return HttpResponse.create().withEntity(ByteString.fromString("TEST URL IS EMPTY"));
+                            }
+                            if(COUNT.isEmpty()){
+                                return HttpResponse.create().withEntity(ByteString.fromString("COUNT IS EMPTY"));
+                            }
+                            try{
+                                Integer countInteger = Integer.parseInt(COUNT);
+                                Pair<String, Integer> data = new Pair<>(URL, countInteger);
+
+                            }
 
                             return HttpResponse.create().withEntity(ContentTypes.TEXT_HTML_UTF8, ByteString.fromString("<html><body>Hello world!</body></html>"));
 
