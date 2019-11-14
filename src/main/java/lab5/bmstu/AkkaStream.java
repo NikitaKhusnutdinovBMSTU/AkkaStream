@@ -72,7 +72,7 @@ public class AkkaStream {
                                         );
 
                                 CompletionStage<HttpResponse> result = source.via(testSink).toMat(Sink.last(), Keep.right()).run(materializer);
-                                return HttpResponse.create().withEntity(ByteString.fromString(result.toCompletableFuture().get().toString()));
+                                return result.toCompletableFuture().get();
                             } catch (Exception e) {
                                 return HttpResponse.create().withEntity(ByteString.fromString("Some exception happened"));
                             }
