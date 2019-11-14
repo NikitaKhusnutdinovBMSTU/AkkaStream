@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +78,10 @@ public class AkkaStream {
                                                             5000
                                                     );
 
-                                            int value = (int) Await.result(potentialResult, Duration.create(1, TimeDu))
+                                            int value = (int) Await.result(potentialResult, Duration.create(10, TimeUnit.SECONDS));
+                                            if(value != -1){
+                                                return CompletableFuture.completedFuture(value);
+                                            }
 
                                             //Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
                                             Sink<Long, CompletionStage<Integer>> fold = Sink
