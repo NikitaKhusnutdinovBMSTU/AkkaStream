@@ -55,9 +55,8 @@ public class AkkaStream {
                                 Pair<String, Integer> data = new Pair<>(url, countInteger);
                                 Source<Pair<String, Integer>, NotUsed> source = Source.from(Collections.singletonList(data));
 
-                                Flow<Pair<String, Integer>, HttpResponse, NotUsed> testSink = Flow
-                                        .<Pair<String, Integer>>create()
-                                        .map(pair -> new Pair<>(HttpRequest.create().withUri((pair.first())), pair.second()))
+                                Flow<Pair<String, Integer>, HttpResponse, NotUsed> testSink = Flow.<Pair<String, Integer>>create()
+                                        .map(pair -> new Pair<>(HttpRequest.create().withUri(pair.first()), pair.second()))
                                         .mapAsync(1, pair -> {
                                             //Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
                                             Sink<Long, CompletionStage<Integer>> fold = Sink
@@ -71,19 +70,19 @@ public class AkkaStream {
                                                                     .mapConcat(p -> Collections.nCopies(p.second(), p.first()))
                                                                     .mapAsync(1, req2 -> {
                                                                         CompletableFuture<Long> future = CompletableFuture.supplyAsync(() ->
-                                                                                System.nanoTime()
-                                                                            ).thenCompose(start -> CompletableFuture.supplyAsync(() -> {
-                                                                                ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.getUri().toString()).execute();
-                                                                                try {
-                                                                                    Response response = whenResponse.get();
-                                                                                } catch (InterruptedException | ExecutionException e) {
-                                                                                    System.out.println("KEK");
-                                                                                }
-                                                                                return System.nanoTime() - start;
-                                                                            }));
+                                                                                System.currentTimeMillis()
+                                                                        ).thenCompose(start -> CompletableFuture.supplyAsync(() -> {
+                                                                            ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.getUri().toString()).execute();
+                                                                            try {
+                                                                                Response response = whenResponse.get();
+                                                                            } catch (InterruptedException | ExecutionException e) {
+                                                                                System.out.println("KEK");
+                                                                            }
+                                                                            return System.currentTimeMillis() - start;
+                                                                        }));
                                                                         return future;
-                                                                    }).toMat(fold, Keep.right()), Keep.right()).run(materializer);
-                                            //.map(req2 -> new Pair<>(req2, System.currentTimeMillis())).via(httpClient).toMat(fold, Keep.right()), Keep.right()).run(materializer);
+                                                                    })
+                                                                    .toMat(fold, Keep.right()), Keep.right()).run(materializer);
                                         }).map(
                                                 sum -> {
                                                     Double middleValue = (double) sum / (double) countInteger;
@@ -93,17 +92,18 @@ public class AkkaStream {
 
                                 CompletionStage<HttpResponse> result = source.via(testSink).toMat(Sink.last(), Keep.right()).run(materializer);
                                 return result.toCompletableFuture().get();
-                            } catch (NumberFormatException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                                 return HttpResponse.create().withEntity(ByteString.fromString("exception is "));
                             }
-
+                        }else{
+                            req.discardEntityBytes(materializer);
+                            return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
                         }
+                    }else{
+                        req.discardEntityBytes(materializer);
+                        return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
                     }
-
-                    req.discardEntityBytes(materializer);
-                    return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
-
                 });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
