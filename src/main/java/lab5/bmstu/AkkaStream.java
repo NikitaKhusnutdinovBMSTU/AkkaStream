@@ -67,6 +67,13 @@ public class AkkaStream {
                                         .map(pair -> new Pair<>(HttpRequest.create().withUri(pair.first()), pair.second()))
                                         .mapAsync(1, pair -> {
 
+                                            Future<Object> ask = Patterns
+                                                    .ask(
+                                                            controlActor,
+                                                            new GetMSG(new javafx.util.Pair<>(data.first(), data.second())),
+                                                            5000
+                                                    );
+
                                             //Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
                                             Sink<Long, CompletionStage<Integer>> fold = Sink
                                                     .fold(0, (ac, el) -> {
