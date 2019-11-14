@@ -14,6 +14,7 @@ import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
 import akka.util.ByteString;
 import akka.japi.Pair;
+import com.sun.xml.internal.ws.util.CompletedFuture;
 import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Response;
 import scala.util.Try;
@@ -59,29 +60,29 @@ public class AkkaStream {
                                         .map(pair -> new Pair<>(HttpRequest.create().withUri((pair.first())), pair.second()))
                                         .mapAsync(1, pair -> {
                                             Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
-                                            Sink<Pair<Try<HttpResponse>, Long>, CompletionStage<Integer>> fold = Sink
+                                            Sink<Long, CompletionStage<Integer>> fold = Sink
                                                     .fold(0, (ac, el) -> {
-                                                        int responseTime = (int) (System.currentTimeMillis() - el.second());
-                                                        return ac + responseTime;
+                                                        return ac + el;
                                                     });
                                             return Source.from(Collections.singletonList(pair))
                                                     .toMat(
                                                             Flow.<Pair<HttpRequest, Integer>>create()
                                                                     .mapConcat(p -> Collections.nCopies(p.second(), p.first()))
                                                                     .mapAsync(1, req2 -> {
-                                                                        CompletableFuture<Long> future = CompletableFuture.supplyAsync(() -> {
-                                                                            return System.nanoTime();
-                                                                        }).thenCompose(start -> {
+                                                                        CompletableFuture<Long> future = CompletableFuture.supplyAsync(() ->
+                                                                                System.nanoTime()
+                                                                        ).thenCompose(start -> CompletableFuture.supplyAsync(() -> {
                                                                             ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.toString()).execute();
                                                                             try {
                                                                                 Response response = whenResponse.get();
                                                                             } catch (InterruptedException | ExecutionException e) {
 
                                                                             }
-                                                                            return "kek";
-                                                                        });
-                                                                    })
-                                                                    .map(req2 -> new Pair<>(req2, System.currentTimeMillis())).via(httpClient).toMat(fold, Keep.right()), Keep.right()).run(materializer);
+                                                                            return System.nanoTime() - start;
+                                                                        }));
+                                                                        return future;
+                                                                    }).toMat(fold, Keep.right()), Keep.right()).run(materializer);
+                                                                    //.map(req2 -> new Pair<>(req2, System.currentTimeMillis())).via(httpClient).toMat(fold, Keep.right()), Keep.right()).run(materializer);
                                         }).map(
                                                 sum -> {
                                                     Double middleValue = (double) sum / (double) countInteger;
