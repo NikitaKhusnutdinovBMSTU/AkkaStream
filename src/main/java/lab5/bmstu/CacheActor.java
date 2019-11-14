@@ -27,9 +27,13 @@ public class CacheActor extends AbstractActor {
                                 getSender().tell(-1, ActorRef.noSender());
                             }
                         })
-                .match(PutMSG.class, msg -> {
-                    data.put();
-                })
+                .match(
+                        PutMSG.class,
+                        msg -> data.put(
+                                msg.getURL(),
+                                new HashMap<>(msg.getCount(), msg.getTime())
+                        )
+                )
                 .build();
     }
 }

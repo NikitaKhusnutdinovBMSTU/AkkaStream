@@ -74,9 +74,8 @@ public class AkkaStream {
                                                             new GetMSG(new javafx.util.Pair<>(data.first(), data.second())),
                                                             5000
                                                     );
-                                            //if (potentialResult.value() == -1){
 
-                                            //}
+                                            potentialResult.value();
 
                                             //Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
                                             Sink<Long, CompletionStage<Integer>> fold = Sink
