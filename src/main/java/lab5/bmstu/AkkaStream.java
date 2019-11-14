@@ -46,10 +46,7 @@ public class AkkaStream {
                             try{
                                 Integer countInteger = Integer.parseInt(count);
                                 Pair<String, Integer> data = new Pair<>(url, countInteger);
-                                CompletionStage<Long> completionStage = Source
-                                        .from(Collections.singletonList(data))
-                                        .toMat(testSink, Keep.right())
-                                        .run(materializer);
+                                
 
 
                             } catch(Exception e){
@@ -59,17 +56,11 @@ public class AkkaStream {
                             return HttpResponse.create().withEntity(ContentTypes.TEXT_HTML_UTF8, ByteString.fromString("<html><body>Hello world!</body></html>"));
 
                         }
-                        if (req.getUri().path().equals("/test")) {
-                            return HttpResponse.create().withEntity(ByteString.fromString("TEST WORKS!"));
-                        } else {
-                            req.discardEntityBytes(materializer);
-                            return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
-                        }
                     }else{
                             req.discardEntityBytes(materializer);
                             return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
                     }
-                }).mapAsync(1, Patterns.ask(controlActor, new myMessage(), 5000));
+                });
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
                 ConnectHttp.toHost("localhost", 8080),
