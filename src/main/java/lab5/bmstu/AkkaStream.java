@@ -52,7 +52,7 @@ public class AkkaStream {
                                         }
                                 ).map(response -> {
                                     HttpResponse.create().withEntity(ByteString.fromString("answer " + response));
-                                }).then;
+                                });
 
 
                             } catch(Exception e){
