@@ -30,80 +30,65 @@ public class AkkaStream {
     private static ActorRef controlActor;
 
     public static void main(String[] args) throws IOException {
-
         System.out.println("start!");
         ActorSystem system = ActorSystem.create("routes");
         final Http http = Http.get(system);
-        final ActorMaterializer materializer = ActorMaterializer.create(system);
-        //<вызов метода которому передаем Http, ActorSystem и ActorMaterializer>;
+        final ActorMaterializer materializer =
+                ActorMaterializer.create(system);
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = Flow.of(HttpRequest.class).map(
-                req -> {
-
-                    if (req.method() == HttpMethods.GET) {
-                        if (req.getUri().path().equals("/")) {
-                            String url = req.getUri().query().get("testUrl").orElse("");
-                            String count = req.getUri().query().get("count").orElse("");
-                            if (url.isEmpty()) {
-                                return HttpResponse.create().withEntity(ByteString.fromString("TEST URL IS EMPTY"));
-                            }
-                            if (url.isEmpty()) {
-                                return HttpResponse.create().withEntity(ByteString.fromString("COUNT IS EMPTY"));
-                            }
+                request -> {
+                    if(request.method() == HttpMethods.GET) {
+                        if (request.getUri().path().equals("/")) {
+                            String url =  request.getUri().query().get("testUrl").get();
+                            int count =  Integer.parseInt(request.getUri().query().get("count").get());
+                            Pair<String, Integer> data = new Pair<>(url,count);
                             try {
-                                Integer countInteger = Integer.parseInt(count);
-                                Pair<String, Integer> data = new Pair<>(url, countInteger);
-                                Source<Pair<String, Integer>, NotUsed> source = Source.from(Collections.singletonList(data));
-
-                                Flow<Pair<String, Integer>, HttpResponse, NotUsed> testSink = Flow.<Pair<String, Integer>>create()
-                                        .map(pair -> new Pair<>(HttpRequest.create().withUri(pair.first()), pair.second()))
-                                        .mapAsync(1, pair -> {
-                                            //Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
-                                            Sink<Long, CompletionStage<Integer>> fold = Sink
-                                                    .fold(0, (ac, el) -> {
-                                                        int testEl = (int) (0 + el);
-                                                        return ac + testEl;
-                                                    });
-                                            return Source.from(Collections.singletonList(pair))
-                                                    .toMat(
-                                                            Flow.<Pair<HttpRequest, Integer>>create()
-                                                                    .mapConcat(p -> Collections.nCopies(p.second(), p.first()))
-                                                                    .mapAsync(1, req2 -> {
-                                                                        CompletableFuture<Long> future = CompletableFuture.supplyAsync(() ->
-                                                                                System.currentTimeMillis()
-                                                                        ).thenCompose(start -> CompletableFuture.supplyAsync(() -> {
-                                                                            ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.getUri().toString()).execute();
+                                Source<Pair<String, Integer>, NotUsed> source = Source.from(Collections.singleton(data));
+                                Flow<Pair<String, Integer>, HttpResponse, NotUsed> flow = Flow.<Pair<String, Integer>>create()
+                                        .map(pair -> new Pair<>(HttpRequest.create().withUri(pair.first()), pair.second())).
+                                                mapAsync(1, pair -> {
+                                                    Sink<Long, CompletionStage<Integer>> fold = Sink.fold(0,
+                                                            (accumulator, element) -> {
+                                                                int responseTime = (int) (0 + element);
+                                                                return accumulator + responseTime;
+                                                            });
+                                                    return Source.from(Collections.singleton(pair)).toMat(Flow.<Pair<HttpRequest, Integer>>create().
+                                                            mapConcat(p -> Collections.nCopies(p.second(), p.first())).
+                                                            mapAsync(1, request2 ->{
+                                                                CompletableFuture<Long> future = CompletableFuture.supplyAsync(() -> System.currentTimeMillis())
+                                                                        .thenCompose(start -> CompletableFuture.supplyAsync(() -> {
+                                                                            ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(request2.getUri().toString()).execute();
                                                                             try {
                                                                                 Response response = whenResponse.get();
                                                                             } catch (InterruptedException | ExecutionException e) {
-                                                                                System.out.println("KEK");
+                                                                                System.out.println(e);
                                                                             }
                                                                             return System.currentTimeMillis() - start;
                                                                         }));
-                                                                        return future;
-                                                                    })
-                                                                    .toMat(fold, Keep.right()), Keep.right()).run(materializer);
-                                        }).map(
-                                                sum -> {
-                                                    Double middleValue = (double) sum / (double) countInteger;
-                                                    return HttpResponse.create().withEntity(ByteString.fromString("response is " + middleValue.toString()));
-                                                }
-                                        );
-
-                                CompletionStage<HttpResponse> result = source.via(testSink).toMat(Sink.last(), Keep.right()).run(materializer);
+                                                                return future;
+                                                            })
+                                                            .toMat(fold, Keep.right()), Keep.right()).run(materializer);
+                                                }).map(sum -> {
+                                            Double middleValue = (double)sum/(double)count;
+                                            return HttpResponse.create().withEntity(ByteString.fromString(middleValue.toString()));
+                                        });
+                                CompletionStage<HttpResponse> result = source.via(flow).toMat(Sink.last(), Keep.right()).run(materializer);
                                 return result.toCompletableFuture().get();
-                            } catch (NumberFormatException e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
-                                return HttpResponse.create().withEntity(ByteString.fromString("exception is"));
+                                return HttpResponse.create().withEntity(ByteString.fromString(e.toString()));
                             }
-                        }else{
-                            req.discardEntityBytes(materializer);
-                            return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
+                        } else {
+                            request.discardEntityBytes(materializer);
+                            return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NO");
                         }
-                    }else{
-                        req.discardEntityBytes(materializer);
-                        return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NOPE");
+                    } else {
+                        request.discardEntityBytes(materializer);
+                        return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity("NO");
+
                     }
-                });
+                }
+        );
         final CompletionStage<ServerBinding> binding = http.bindAndHandle(
                 routeFlow,
                 ConnectHttp.toHost("localhost", 8080),
@@ -113,6 +98,6 @@ public class AkkaStream {
         System.in.read();
         binding
                 .thenCompose(ServerBinding::unbind)
-                .thenAccept(unbound -> system.terminate()); // and shutdown when done
+                .thenAccept(unbound -> system.terminate());
     }
 }
