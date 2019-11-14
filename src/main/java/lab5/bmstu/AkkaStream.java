@@ -48,9 +48,9 @@ public class AkkaStream {
                                 Flow<Pair<String, Integer>, HttpResponse, NotUsed> testFlow = Flow.<Pair<String, Integer>>create().mapAsync(
                                         1,
                                         pair -> {
-                                            Patterns.ask(controlActor, new GetMSG(pair), 5000);
+                                            Future<Object> result = Patterns.ask(controlActor, new GetMSG(pair), 5000);
                                         }
-                                ).map(response -> {
+                                ).thenCompose().map(response -> {
                                     HttpResponse.create().withEntity(ByteString.fromString("answer " + response));
                                 });
 
