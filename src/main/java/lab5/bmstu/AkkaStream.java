@@ -62,7 +62,8 @@ public class AkkaStream {
                                             Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
                                             Sink<Long, CompletionStage<Integer>> fold = Sink
                                                     .fold(0, (ac, el) -> {
-                                                        return new Long(ac) + new Long(el);
+                                                        int testEl = (int) (0 + el);
+                                                        return ac + testEl;
                                                     });
                                             return Source.from(Collections.singletonList(pair))
                                                     .toMat(
