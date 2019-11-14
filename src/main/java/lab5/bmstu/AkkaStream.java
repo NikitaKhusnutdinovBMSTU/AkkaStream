@@ -108,6 +108,7 @@ public class AkkaStream {
                                                                             }
                                                                             return System.currentTimeMillis() - start;
                                                                         }));
+                                                                        
                                                                         return future;
                                                                     })
                                                                     .toMat(fold, Keep.right()), Keep.right()).run(materializer);
