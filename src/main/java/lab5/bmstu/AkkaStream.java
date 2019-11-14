@@ -48,7 +48,9 @@ public class AkkaStream {
                                         pair -> new Pair<>(HttpRequest.create().withUri(pair.getKey()), pair.getValue())
                                 ).mapAsync(1, pair -> {
                                     Patterns.ask(controlActor, new GetMSG(pair), 5000);
-                                })
+                                }).map(response -> {
+                                    HttpResponse.create().withEntity(ByteString.fromString("answe "))
+                                });
 
 
                             } catch(Exception e){
