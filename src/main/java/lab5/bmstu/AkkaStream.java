@@ -7,11 +7,9 @@ import akka.actor.Props;
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
-import akka.http.javadsl.marshallers.jackson.Jackson;
 import akka.http.javadsl.model.*;
 import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
-import akka.stream.impl.Completed;
 import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
@@ -23,18 +21,13 @@ import scala.concurrent.Await;
 import scala.concurrent.Future;
 import org.asynchttpclient.*;
 import scala.concurrent.duration.Duration;
-import scala.util.Try;
-import static org.asynchttpclient.Dsl.*;
 import static org.asynchttpclient.Dsl.asyncHttpClient;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +35,7 @@ public class AkkaStream {
     private static ActorRef controlActor;
     private static final Logger logger = LoggerFactory.getLogger(AkkaStream.class);
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException, ExecutionException {
 
         System.out.println("start!");
         ActorSystem system = ActorSystem.create("routes");
@@ -50,7 +43,6 @@ public class AkkaStream {
         controlActor = system.actorOf(Props.create(CacheActor.class));
         final Http http = Http.get(system);
         final ActorMaterializer materializer = ActorMaterializer.create(system);
-        //<вызов метода которому передаем Http, ActorSystem и ActorMaterializer>;
         final Flow<HttpRequest, HttpResponse, NotUsed> routeFlow = Flow.of(HttpRequest.class).map(
                 req -> {
 
@@ -67,7 +59,6 @@ public class AkkaStream {
                             try {
                                 Integer countInteger = Integer.parseInt(count);
                                 Pair<String, Integer> data = new Pair<>(url, countInteger);
-                                boolean flag = false;
                                 Source<Pair<String, Integer>, NotUsed> source = Source.from(Collections.singletonList(data));
 
                                 Flow<Pair<String, Integer>, HttpResponse, NotUsed> testSink = Flow.<Pair<String, Integer>>create()
@@ -101,11 +92,11 @@ public class AkkaStream {
                                                                                 System.currentTimeMillis()
                                                                         ).thenCompose(start -> CompletableFuture.supplyAsync(() -> {
                                                                             ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.getUri().toString()).execute();
-                                                                            try {
+                                                                            //try {
                                                                                 Response response = whenResponse.get();
-                                                                            } catch (InterruptedException | ExecutionException e) {
-                                                                                e.printStackTrace();
-                                                                            }
+                                                                           // } catch (InterruptedException | ExecutionException e) {
+                                                                           //     e.printStackTrace();
+                                                                           // }
                                                                             return System.currentTimeMillis() - start;
                                                                         }));
                                                                         return future;
