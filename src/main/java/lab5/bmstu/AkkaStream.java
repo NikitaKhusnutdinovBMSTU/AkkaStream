@@ -67,7 +67,7 @@ public class AkkaStream {
                                         }).map(
                                                 sum -> {
                                                     Double middleValue = (double) sum/ (double) countInteger;
-                                                    return HttpResponse.create().withEntity(ByteString.fromString("response is " + middleValue.toString()))
+                                                    return HttpResponse.create().withEntity(ByteString.fromString("response is " + middleValue.toString()));
                                                 }
                                         );
 
