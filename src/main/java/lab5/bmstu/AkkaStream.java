@@ -104,16 +104,16 @@ public class AkkaStream {
                                                                             try {
                                                                                 Response response = whenResponse.get();
                                                                             } catch (InterruptedException | ExecutionException e) {
-                                                                                System.out.println("KEK");
+                                                                                e.printStackTrace();
                                                                             }
                                                                             return System.currentTimeMillis() - start;
                                                                         }));
-                                                                        
                                                                         return future;
                                                                     })
                                                                     .toMat(fold, Keep.right()), Keep.right()).run(materializer);
                                         }).map(
                                                 sum -> {
+                                                    Patterns.ask(controlActor, new PutMSG(new javafx.util.Pair<>(data.first(), new javafx.util.Pair<>(data.second(), sum))), 5000);
                                                     Double middleValue = (double) sum / (double) countInteger;
                                                     return HttpResponse.create().withEntity(ByteString.fromString("response is " + middleValue.toString()));
                                                 }

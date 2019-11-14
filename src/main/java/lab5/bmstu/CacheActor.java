@@ -30,9 +30,14 @@ public class CacheActor extends AbstractActor {
                 .match(
                         PutMSG.class,
                         msg -> {
-                            Map<Integer, Integer> k = new HashMap<>();
-                            k.put(msg.getCount(), msg.getTime());
-                            data.put(msg.getURL(), k);
+                            Map<Integer, Integer> temp;
+                            if(data.containsKey(msg.getURL())){
+                                temp = data.get(msg.getURL());
+                            }else{
+                                temp = new HashMap<>();
+                            }
+                            temp.put(msg.getCount(), msg.getTime());
+                            data.put(msg.getURL(), temp);
                         }
                 )
                 .build();
