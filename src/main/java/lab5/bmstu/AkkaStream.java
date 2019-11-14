@@ -15,11 +15,8 @@ import akka.stream.javadsl.Source;
 import akka.util.ByteString;
 import akka.japi.Pair;
 import scala.util.Try;
-
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.CompletionStage;
 
 public class AkkaStream {
