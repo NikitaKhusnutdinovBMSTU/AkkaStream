@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 public class AkkaStream {
     private static ActorRef controlActor;
-
+    private static final Logger logger = LoggerFactory.getLogger(AkkaStream.class);
 
     public static void main(String[] args) throws IOException {
 
