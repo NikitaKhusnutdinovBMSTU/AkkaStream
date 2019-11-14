@@ -93,7 +93,7 @@ public class AkkaStream {
                                 return result.toCompletableFuture().get();
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                return HttpResponse.create().withEntity(ByteString.fromString("exception is "));
+                                return HttpResponse.create().withEntity(ByteString.fromString("exception is"));
                             }
                         }else{
                             req.discardEntityBytes(materializer);
