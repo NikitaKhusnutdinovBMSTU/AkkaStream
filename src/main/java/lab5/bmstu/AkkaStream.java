@@ -7,24 +7,29 @@ import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
 import akka.http.javadsl.model.*;
+import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
+import akka.stream.impl.Completed;
 import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
-import akka.util.ByteString;
 import akka.japi.Pair;
-import org.asynchttpclient.ListenableFuture;
+import akka.util.ByteString;
 import org.asynchttpclient.Response;
+import scala.concurrent.Future;
+import org.asynchttpclient.*;
 import scala.util.Try;
-
+import static org.asynchttpclient.Dsl.*;
+import static org.asynchttpclient.Dsl.asyncHttpClient;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutionException;
-
-import static org.asynchttpclient.Dsl.asyncHttpClient;
+import java.util.regex.Pattern;
 
 public class AkkaStream {
     private static ActorRef controlActor;
