@@ -47,7 +47,7 @@ public class AkkaStream {
         System.out.println("start!");
         ActorSystem system = ActorSystem.create("routes");
 
-        controlActor = system.actorFor(Props.create(CacheActor.class));
+        controlActor = system.actorOf(Props.create(CacheActor.class));
         final Http http = Http.get(system);
         final ActorMaterializer materializer = ActorMaterializer.create(system);
         //<вызов метода которому передаем Http, ActorSystem и ActorMaterializer>;

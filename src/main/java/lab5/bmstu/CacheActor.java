@@ -29,10 +29,11 @@ public class CacheActor extends AbstractActor {
                         })
                 .match(
                         PutMSG.class,
-                        msg -> data.put(
-                                msg.getURL(),
-                                new HashMap<>(msg.getCount(), msg.getTime())
-                        )
+                        msg -> {
+                            Map<Integer, Integer> k = new HashMap<>();
+                            k.put(msg.getCount(), msg.getTime());
+                            data.put(msg.getURL(), k);
+                        }
                 )
                 .build();
     }

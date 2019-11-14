@@ -17,7 +17,7 @@ public class PutMSG {
         return msg.getValue().getKey();
     }
 
-    public long getTime(){
+    public int getTime(){
         return msg.getValue().getValue();
     }
 }
