@@ -14,11 +14,15 @@ import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
 import akka.util.ByteString;
 import akka.japi.Pair;
+import org.asynchttpclient.ListenableFuture;
+import org.asynchttpclient.Response;
 import scala.util.Try;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.concurrent.CompletionStage;
+
+import static org.asynchttpclient.Dsl.asyncHttpClient;
 
 public class AkkaStream {
     private static ActorRef controlActor;
@@ -62,8 +66,11 @@ public class AkkaStream {
                                                     .toMat(
                                                             Flow.<Pair<HttpRequest, Integer>>create()
                                                                     .mapConcat(p -> Collections.nCopies(p.second(), p.first()))
-                                                                    .mapAsync(1, pair ->{
-                                                                        
+                                                                    .mapAsync(1, req2 ->{
+                                                                        long start = System.nanoTime();
+                                                                        ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.toString()).execute();
+                                                                        Response response = whenResponse.get();
+                                                                        long elapsedTime = System.nanoTime() - start;
                                                                     })
                                                                     .map(req2 -> new Pair<>(req2, System.currentTimeMillis())).via(httpClient).toMat(fold, Keep.right()), Keep.right()).run(materializer);
                                         }).map(
