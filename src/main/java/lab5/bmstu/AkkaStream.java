@@ -62,6 +62,9 @@ public class AkkaStream {
                                                     .toMat(
                                                             Flow.<Pair<HttpRequest, Integer>>create()
                                                                     .mapConcat(p -> Collections.nCopies(p.second(), p.first()))
+                                                                    .mapAsync(1, pair ->{
+                                                                        
+                                                                    })
                                                                     .map(req2 -> new Pair<>(req2, System.currentTimeMillis())).via(httpClient).toMat(fold, Keep.right()), Keep.right()).run(materializer);
                                         }).map(
                                                 sum -> {
