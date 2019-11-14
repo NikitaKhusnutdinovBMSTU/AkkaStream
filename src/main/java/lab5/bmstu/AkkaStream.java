@@ -49,6 +49,7 @@ public class AkkaStream {
                                         1,
                                         pair -> {
                                             Future<Object> result = Patterns.ask(controlActor, new GetMSG(pair), 5000);
+                                            return "kek";
                                         }
                                 ).map(response -> {
                                     HttpResponse.create().withEntity(ByteString.fromString("answer " + response));
