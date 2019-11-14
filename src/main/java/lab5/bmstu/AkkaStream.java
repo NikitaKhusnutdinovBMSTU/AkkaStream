@@ -30,17 +30,17 @@ public class AkkaStream {
 
                     if(req.method() == HttpMethods.GET) {
                         if (req.getUri().path().equals("/")) {
-                            String URL = req.getUri().query().get("testUrl").orElse("");
-                            String COUNT = req.getUri().query().get("count").orElse("");
-                            if(URL.isEmpty()){
+                            String url = req.getUri().query().get("testUrl").orElse("");
+                            String count = req.getUri().query().get("count").orElse("");
+                            if(url.isEmpty()){
                                 return HttpResponse.create().withEntity(ByteString.fromString("TEST URL IS EMPTY"));
                             }
-                            if(COUNT.isEmpty()){
+                            if(url.isEmpty()){
                                 return HttpResponse.create().withEntity(ByteString.fromString("COUNT IS EMPTY"));
                             }
                             try{
-                                Integer countInteger = Integer.parseInt(COUNT);
-                                Pair<String, Integer> data = new Pair<>(URL, countInteger);
+                                Integer countInteger = Integer.parseInt(count);
+                                Pair<String, Integer> data = new Pair<>(url, countInteger);
 
                             }
 
