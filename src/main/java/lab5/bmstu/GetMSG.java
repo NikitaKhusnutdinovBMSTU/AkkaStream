@@ -1,20 +1,19 @@
 package lab5.bmstu;
 
+import javafx.util.Pair;
+
 public class GetMSG {
+    Pair<String, Integer> msgPair;
 
-    private String URL;
-    private int count;
-
-    public GetMSG(String initURL, int initCount){
-        this.URL = initURL;
-        this.count = initCount;
+    public GetMSG(Pair<String, Integer> pair){
+        this.msgPair = new Pair<>(pair.getKey(), pair.getValue());
     }
 
     public String getURL(){
-        return URL;
+        return msgPair.getKey();
     }
 
     public int getCount(){
-        return count;
+        return msgPair.getValue();
     }
 }

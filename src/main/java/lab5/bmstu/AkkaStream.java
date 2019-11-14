@@ -44,7 +44,12 @@ public class AkkaStream {
                             try{
                                 Integer countInteger = Integer.parseInt(count);
                                 Pair<String, Integer> data = new Pair<>(url, countInteger);
-                                Source<Pair<String, Integer>, NotUsed> source = Source.from(Collections.singletonList(data));
+                                Flow<Pair<String, Integer>, HttpResponse, NotUsed> testFlow = Flow.<Pair<String, Integer>>create().map(
+                                        pair -> new Pair<>(HttpRequest.create().withUri(pair.getKey()), pair.getValue())
+                                ).mapAsync(1, pair -> {
+                                    Patterns.ask(controlActor, pair, )
+                                })
+
 
                             } catch(Exception e){
                                 return HttpResponse.create().withEntity(ByteString.fromString("Some exception happened"));
