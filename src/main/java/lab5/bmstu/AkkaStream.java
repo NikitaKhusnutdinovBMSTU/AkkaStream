@@ -110,6 +110,7 @@ public class AkkaStream {
                                                                     .toMat(fold, Keep.right()), Keep.right()).run(materializer);
                                         }).map(
                                                 sum -> {
+
                                                     Double middleValue = (double) sum / (double) countInteger;
                                                     return HttpResponse.create().withEntity(ByteString.fromString("response is " + middleValue.toString()));
                                                 }
