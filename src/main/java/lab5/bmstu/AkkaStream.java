@@ -6,6 +6,7 @@ import akka.actor.ActorSystem;
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.ServerBinding;
+import akka.http.javadsl.marshallers.jackson.Jackson;
 import akka.http.javadsl.model.*;
 import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
@@ -67,12 +68,13 @@ public class AkkaStream {
                                         .map(pair -> new Pair<>(HttpRequest.create().withUri(pair.first()), pair.second()))
                                         .mapAsync(1, pair -> {
 
-                                            Future<Object> ask = Patterns
+                                            Future<Object> potentialResult = Patterns
                                                     .ask(
                                                             controlActor,
                                                             new GetMSG(new javafx.util.Pair<>(data.first(), data.second())),
                                                             5000
                                                     );
+                                            potentialResult.value();
 
                                             //Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool();
                                             Sink<Long, CompletionStage<Integer>> fold = Sink
