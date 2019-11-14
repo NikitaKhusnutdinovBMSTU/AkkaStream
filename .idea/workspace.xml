@@ -35,13 +35,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="4465" />
+          <entry key="java" value="4466" />
           <entry key="xml" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="4465" />
+          <entry key="JAVA" value="4466" />
           <entry key="XML" value="21" />
         </counts>
       </usages-collector>
@@ -61,8 +61,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="66" selection-start-line="66" selection-end-line="66" />
+            <state relative-caret-position="75">
+              <caret line="64" column="84" selection-start-line="64" selection-start-column="84" selection-end-line="64" selection-end-column="84" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2155#2178#0" expanded="true" />
@@ -283,12 +283,12 @@
       <option name="presentableId" value="Default" />
       <updated>1573637642556</updated>
       <workItem from="1573637647647" duration="10586000" />
-      <workItem from="1573740354119" duration="8405000" />
+      <workItem from="1573740354119" duration="8408000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18991000" />
+    <option name="totallyTimeSpent" value="18994000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="96" y="395" width="1177" height="594" extended-state="0" />
@@ -363,8 +363,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="66" selection-start-line="66" selection-end-line="66" />
+        <state relative-caret-position="75">
+          <caret line="64" column="84" selection-start-line="64" selection-start-column="84" selection-end-line="64" selection-end-column="84" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2155#2178#0" expanded="true" />
