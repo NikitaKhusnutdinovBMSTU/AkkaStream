@@ -30,6 +30,9 @@ public class AkkaStream {
                     System.out.println("EKK");
                     if(req.method() == HttpMethods.GET) {
                         if (req.getUri().path().equals("/")) {
+                            String URL = req.getUri().query().get("testUrl").get();
+                            int COUNT = Integer.parseInt(req.getUri().query().get("count").get());
+
                             return HttpResponse.create().withEntity(ContentTypes.TEXT_HTML_UTF8, ByteString.fromString("<html><body>Hello world!</body></html>"));
 
                         }
