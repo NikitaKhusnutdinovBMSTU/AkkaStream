@@ -45,11 +45,12 @@ public class AkkaStream {
                             try{
                                 Integer countInteger = Integer.parseInt(count);
                                 Pair<String, Integer> data = new Pair<>(url, countInteger);
+                                Source<Pair<String, Integer>, NotUsed> source = Source.from(Collections.singletonList(data));
                                 Flow<Pair<String, Integer>, HttpResponse, NotUsed> testFlow = Flow.<Pair<String, Integer>>create().mapAsync(
                                         1,
                                         pair -> {
                                             Future<Object> result = Patterns.ask(controlActor, new GetMSG(pair), 5000);
-                                            return "kek";
+                                            
                                         }
                                 ).map(response -> {
                                     HttpResponse.create().withEntity(ByteString.fromString("answer " + response));
