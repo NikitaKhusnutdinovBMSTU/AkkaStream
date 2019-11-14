@@ -35,13 +35,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="2628" />
+          <entry key="java" value="2773" />
           <entry key="xml" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="2628" />
+          <entry key="JAVA" value="2773" />
           <entry key="XML" value="21" />
         </counts>
       </usages-collector>
@@ -61,10 +61,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="48" column="32" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="32" />
+            <state relative-caret-position="330">
+              <caret line="50" column="51" selection-start-line="50" selection-start-column="51" selection-end-line="50" selection-end-column="51" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2155#2178#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -136,8 +137,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="182" />
-    <option name="y" value="83" />
+    <option name="x" value="52" />
+    <option name="y" value="88" />
     <option name="width" value="1084" />
     <option name="height" value="703" />
   </component>
@@ -281,15 +282,15 @@
       <option name="presentableId" value="Default" />
       <updated>1573637642556</updated>
       <workItem from="1573637647647" duration="10586000" />
-      <workItem from="1573740354119" duration="1306000" />
+      <workItem from="1573740354119" duration="1813000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11892000" />
+    <option name="totallyTimeSpent" value="12399000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="233" y="94" width="1084" height="703" extended-state="0" />
+    <frame x="52" y="88" width="1084" height="703" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.36230826" />
@@ -361,10 +362,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="48" column="32" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="32" />
+        <state relative-caret-position="330">
+          <caret line="50" column="51" selection-start-line="50" selection-start-column="51" selection-end-line="50" selection-end-column="51" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2155#2178#0" expanded="true" />
           </folding>
         </state>
       </provider>

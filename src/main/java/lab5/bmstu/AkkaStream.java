@@ -13,7 +13,7 @@ import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
 import akka.stream.javadsl.Source;
 import akka.util.ByteString;
-import javafx.util.Pair;
+import akka.japi.Pair;
 import scala.concurrent.Future;
 
 import java.io.IOException;
@@ -46,7 +46,9 @@ public class AkkaStream {
                             try{
                                 Integer countInteger = Integer.parseInt(count);
                                 Pair<String, Integer> data = new Pair<>(url, countInteger);
-                                Flow<Pair<String, Integer>, HttpResponse, NotUsed> testSink = Flow.<Pair<String, Integer>>create().mapConcat()
+                                Flow<Pair<String, Integer>, HttpResponse, NotUsed> testSink = Flow
+                                        .<Pair<String, Integer>>create()
+                                        .mapConcat();
 
 
                             } catch(Exception e){
