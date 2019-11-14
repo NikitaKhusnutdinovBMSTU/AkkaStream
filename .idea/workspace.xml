@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="76111c3d-7260-4f8d-9042-cb77df60758b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab5/bmstu/GetMSG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab5/bmstu/GetMSG.java" afterDir="false" />
-    </list>
+    <list default="true" id="76111c3d-7260-4f8d-9042-cb77df60758b" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,13 +32,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="2108" />
+          <entry key="java" value="2129" />
           <entry key="xml" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="2108" />
+          <entry key="JAVA" value="2129" />
           <entry key="XML" value="21" />
         </counts>
       </usages-collector>
@@ -58,11 +55,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
-              <caret line="49" column="67" lean-forward="true" selection-start-line="49" selection-start-column="67" selection-end-line="49" selection-end-column="67" />
+            <state relative-caret-position="248">
+              <caret line="47" column="102" selection-start-line="47" selection-start-column="102" selection-end-line="47" selection-end-column="102" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2102#2125#0" expanded="true" />
@@ -83,7 +80,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/GetMSG.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
@@ -117,8 +114,8 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/lab5/bmstu/CacheActor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java" />
         <option value="$PROJECT_DIR$/src/main/java/lab5/bmstu/GetMSG.java" />
+        <option value="$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java" />
       </list>
     </option>
   </component>
@@ -196,7 +193,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1573738294386" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1573738320105" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -283,15 +280,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573637642556</updated>
-      <workItem from="1573637647647" duration="9250000" />
+      <workItem from="1573637647647" duration="9902000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9250000" />
+    <option name="totallyTimeSpent" value="9902000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <frame x="0" y="47" width="1411" height="703" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Image Layers" />
@@ -299,7 +296,7 @@
       <window_info id="UI Designer" />
       <window_info id="Capture Tool" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.4006462" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.36230826" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Messages" weight="0.32913387" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
@@ -308,7 +305,7 @@
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.19315068" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.23076923" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -355,17 +352,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="49" column="67" lean-forward="true" selection-start-line="49" selection-start-column="67" selection-end-line="49" selection-end-column="67" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2102#2125#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/GetMSG.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -377,6 +363,17 @@
             <element signature="e#272#273#0" expanded="true" />
             <element signature="e#305#306#0" expanded="true" />
             <element signature="e#329#330#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="47" column="102" selection-start-line="47" selection-start-column="102" selection-end-line="47" selection-end-column="102" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2102#2125#0" expanded="true" />
           </folding>
         </state>
       </provider>
