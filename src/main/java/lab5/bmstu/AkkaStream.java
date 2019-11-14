@@ -11,10 +11,12 @@ import akka.pattern.Patterns;
 import akka.stream.ActorMaterializer;
 import akka.stream.javadsl.Flow;
 import akka.stream.javadsl.Keep;
+import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
 import akka.util.ByteString;
 import akka.japi.Pair;
 import scala.concurrent.Future;
+import scala.util.Try;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,15 +50,17 @@ public class AkkaStream {
                             try{
                                 Integer countInteger = Integer.parseInt(count);
                                 Pair<String, Integer> data = new Pair<>(url, countInteger);
+
+
                                 Flow<Pair<String, Integer>, HttpResponse, NotUsed> testSink = Flow
                                         .<Pair<String, Integer>>create()
-                                        .mapConcat(p -> {
-                                            List<String> list = new ArrayList<>();
-                                            for(int i = 0; i < p.second(); i++){
-                                                list.add(p.first());
-                                            }
-                                            return list;
-                                        }).mapAsync();
+                                        .map(pair -> new Pair<>(HttpRequest.create().withUri((pair.first())), pair.second()))
+                                        .mapAsync(1, pair ->{
+                                            Flow<Pair<HttpRequest, Long>, Pair<Try<HttpResponse>, Long>, NotUsed> httpClient = http.superPool(materializer);
+                                            Sink<Pair<Try<HtppResponse>, Long>, CompletionStage<Integer>> fold = Sink.fold(0, (ac, el) -> {
+                                                
+                                            })
+                                        });
 
 
                             } catch(Exception e){
