@@ -156,9 +156,9 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="61" />
-    <option name="y" value="63" />
+    <option name="y" value="62" />
     <option name="width" value="1244" />
     <option name="height" value="594" />
   </component>
