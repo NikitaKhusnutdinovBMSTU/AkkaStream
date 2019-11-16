@@ -50,6 +50,10 @@ public class AkkaStream {
     private static final String SERVER_WELCOME_MSG = "Server online at http://localhost:8080/\nPress RETURN to stop...";
     private static final String LOCALHOST = "localhost";
     private static final int LOCALHOST_PORT = 8080;
+    private static final int TIME_MILLIS = 5000;
+    private static final int ZERO = 0;
+    private static final int NO_SUCH_DATA = -1;
+    private static final int PARALLELISM = 1;
 
     public static void main(String[] args) throws IOException {
 
@@ -84,24 +88,24 @@ public class AkkaStream {
                                                     .ask(
                                                             controlActor,
                                                             new GetMSG(new javafx.util.Pair<>(data.first(), data.second())),
-                                                            5000
+                                                            TIME_MILLIS
                                                     );
 
                                             int value = (int) Await.result(potentialResult, Duration.create(10, TimeUnit.SECONDS));
-                                            if (value != -1) {
+                                            if (value != NO_SUCH_DATA) {
                                                 return CompletableFuture.completedFuture(value);
                                             }
                                             // fold for counting all time
                                             Sink<Long, CompletionStage<Integer>> fold = Sink
-                                                    .fold(0, (ac, el) -> {
-                                                        int testEl = (int) (0 + el);
+                                                    .fold(ZERO, (ac, el) -> {
+                                                        int testEl = (int) (ZERO + el);
                                                         return ac + testEl;
                                                     });
                                             return Source.from(Collections.singletonList(pair))
                                                     .toMat(
                                                             Flow.<Pair<HttpRequest, Integer>>create()
                                                                     .mapConcat(p -> Collections.nCopies(p.second(), p.first()))
-                                                                    .mapAsync(1, req2 -> {
+                                                                    .mapAsync(PARALLELISM, req2 -> {
                                                                         CompletableFuture<Long> future = CompletableFuture.supplyAsync(() ->
                                                                                 System.currentTimeMillis()
                                                                         ).thenCompose(start -> CompletableFuture.supplyAsync(() -> {
