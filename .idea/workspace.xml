@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="76111c3d-7260-4f8d-9042-cb77df60758b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java" afterDir="false" />
-    </list>
+    <list default="true" id="76111c3d-7260-4f8d-9042-cb77df60758b" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -64,8 +62,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="232">
-              <caret line="130" column="42" lean-forward="true" selection-start-line="130" selection-start-column="42" selection-end-line="130" selection-end-column="42" />
+            <state relative-caret-position="1727">
+              <caret line="117" column="65" selection-end-line="160" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#5762#5790#0" expanded="true" />
@@ -200,11 +198,9 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="35" />
-    <option name="y" value="45" />
-    <option name="width" value="1260" />
-    <option name="height" value="651" />
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="width" value="1280" />
+    <option name="height" value="800" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -350,15 +346,15 @@
       <updated>1573637642556</updated>
       <workItem from="1573637647647" duration="10586000" />
       <workItem from="1573740354119" duration="19678000" />
-      <workItem from="1573764221904" duration="7360000" />
+      <workItem from="1573764221904" duration="7686000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37624000" />
+    <option name="totallyTimeSpent" value="37950000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="727" extended-state="6" />
+    <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09289176" />
@@ -370,7 +366,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.20944881" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.18219177" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -379,7 +375,7 @@
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Messages" order="11" visible="true" weight="0.32755905" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.32755905" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -494,8 +490,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/lab5/bmstu/AkkaStream.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="130" column="42" lean-forward="true" selection-start-line="130" selection-start-column="42" selection-end-line="130" selection-end-column="42" />
+        <state relative-caret-position="1727">
+          <caret line="117" column="65" selection-end-line="160" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#5762#5790#0" expanded="true" />
