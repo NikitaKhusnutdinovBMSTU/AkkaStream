@@ -16,6 +16,7 @@ import akka.stream.javadsl.Sink;
 import akka.stream.javadsl.Source;
 import akka.japi.Pair;
 import akka.util.ByteString;
+import akka.util.Timeout;
 import org.asynchttpclient.Response;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
@@ -86,15 +87,17 @@ public class AkkaStream {
                                         .map(pair -> new Pair<>(HttpRequest.create().withUri(pair.first()), pair.second()))
                                         .mapAsync(1, pair -> {
 
-                                            Future<Object> potentialResult = Patterns
+                                            CompletionStage<Integer> potentialResult = Patterns
                                                     .ask(
                                                             controlActor,
                                                             new GetMSG(new javafx.util.Pair<>(data.first(), data.second())),
-                                                            TIME_MILLIS
+                                                            java.time.Duration.ofMillis(TIME_MILLIS)
+                                                    ).thenCompose(r ->
+                                                         CompletableFuture.completedFuture((int)r)
                                                     );
 
-                                            int value = (int) Await.result(potentialResult, Duration.create(10, TimeUnit.SECONDS));
-                                            if (value != NO_SUCH_DATA) {
+
+                                            if (!= NO_SUCH_DATA) {
                                                 return CompletableFuture.completedFuture(value);
                                             }
                                             // fold for counting all time
