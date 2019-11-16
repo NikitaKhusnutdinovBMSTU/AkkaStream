@@ -21,7 +21,9 @@ import scala.concurrent.Await;
 import scala.concurrent.Future;
 import org.asynchttpclient.*;
 import scala.concurrent.duration.Duration;
+
 import static org.asynchttpclient.Dsl.asyncHttpClient;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
@@ -50,7 +52,7 @@ public class AkkaStream {
     private static final String SERVER_WELCOME_MSG = "Server online at http://localhost:8080/\nPress RETURN to stop...";
     private static final String LOCALHOST = "localhost";
     private static final int LOCALHOST_PORT = 8080;
-    private static final int TIME_MILLIS = 5000;
+    private static final long TIME_MILLIS = 5000;
     private static final int ZERO = 0;
     private static final int NO_SUCH_DATA = -1;
     private static final int PARALLELISM = 1;
@@ -96,9 +98,9 @@ public class AkkaStream {
                                                 return CompletableFuture.completedFuture(value);
                                             }
                                             // fold for counting all time
-                                            Sink<Long, CompletionStage<Integer>> fold = Sink
+                                            Sink<CompletionStage<Long>, CompletionStage<Integer>> fold = Sink
                                                     .fold(ZERO, (ac, el) -> {
-                                                        int testEl = (int) (ZERO + el);
+                                                        int testEl = (int) (ZERO + el.toCompletableFuture().get());
                                                         return ac + testEl;
                                                     });
                                             return Source.from(Collections.singletonList(pair))
@@ -106,19 +108,17 @@ public class AkkaStream {
                                                             Flow.<Pair<HttpRequest, Integer>>create()
                                                                     .mapConcat(p -> Collections.nCopies(p.second(), p.first()))
                                                                     .mapAsync(PARALLELISM, req2 -> {
-                                                                        CompletableFuture<Long> future = CompletableFuture.supplyAsync(() ->
+                                                                        return CompletableFuture.supplyAsync(() ->
                                                                                 System.currentTimeMillis()
                                                                         ).thenCompose(start -> CompletableFuture.supplyAsync(() -> {
-                                                                            ListenableFuture<Response> whenResponse = asyncHttpClient().prepareGet(req2.getUri().toString()).execute();
-                                                                            // Counting time
-                                                                            try {
-                                                                                Response response = whenResponse.get();
-                                                                            } catch (InterruptedException | ExecutionException e) {
-                                                                                e.printStackTrace();
-                                                                            }
-                                                                            return System.currentTimeMillis() - start;
+                                                                            CompletionStage<Long> whenResponse = asyncHttpClient()
+                                                                                    .prepareGet(req2.getUri().toString())
+                                                                                    .execute()
+                                                                                    .toCompletableFuture()
+                                                                                    .thenCompose(r ->
+                                                                                            CompletableFuture.completedFuture(System.currentTimeMillis() - start));
+                                                                            return whenResponse;
                                                                         }));
-                                                                        return future;
                                                                     })
                                                                     .toMat(fold, Keep.right()), Keep.right()).run(materializer);
                                         }).map(
