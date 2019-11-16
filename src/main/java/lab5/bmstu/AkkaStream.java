@@ -114,17 +114,17 @@ public class AkkaStream {
                                                                                                         .prepareGet(req2.getUri().toString())
                                                                                                         .execute()
                                                                                                         .toCompletableFuture()
-                                                                                                        .thenCompose(r ->
+                                                                                                        .thenCompose(answer ->
                                                                                                                 CompletableFuture.completedFuture(System.currentTimeMillis() - start));
                                                                                                 return whenResponse;
                                                                                             }));
                                                                                         })
                                                                                         .toMat(fold, Keep.right()), Keep.right()).run(materializer);
-                                                            }).map(
+                                                            }).thenCompose(
                                                                     sum -> {
                                                                         Patterns.ask(controlActor, new PutMSG(new javafx.util.Pair<>(data.first(), new javafx.util.Pair<>(data.second(), sum))), 5000);
                                                                         Double middleValue = (double) sum / (double) countInteger;
-                                                                        return HttpResponse.create().withEntity(ByteString.fromString(FINAL_ANSWER + middleValue.toString()));
+                                                                        return CompletableFuture.completedFuture(HttpResponse.create().withEntity(ByteString.fromString(FINAL_ANSWER + middleValue.toString())));
                                                                     }
                                                             );
                                                 }
