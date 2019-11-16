@@ -21,11 +21,11 @@ import org.asynchttpclient.Response;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import org.asynchttpclient.*;
-import scala.concurrent.duration.Duration;
 
 import static org.asynchttpclient.Dsl.asyncHttpClient;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -86,76 +86,75 @@ public class AkkaStream {
                                 Flow<Pair<String, Integer>, HttpResponse, NotUsed> testSink = Flow.<Pair<String, Integer>>create()
                                         .map(pair -> new Pair<>(HttpRequest.create().withUri(pair.first()), pair.second()))
                                         .mapAsync(1, pair -> {
-
-                                            CompletionStage<Integer> potentialResult = Patterns
-                                                    .ask(
-                                                            controlActor,
-                                                            new GetMSG(new javafx.util.Pair<>(data.first(), data.second())),
-                                                            java.time.Duration.ofMillis(TIME_MILLIS)
-                                                    ).thenCompose(r ->
-                                                         CompletableFuture.completedFuture((int)r)
-                                                    );
-
-
-                                            if (!= NO_SUCH_DATA) {
-                                                return CompletableFuture.completedFuture(value);
-                                            }
-                                            // fold for counting all time
-                                            Sink<CompletionStage<Long>, CompletionStage<Integer>> fold = Sink
-                                                    .fold(ZERO, (ac, el) -> {
-                                                        int testEl = (int) (ZERO + el.toCompletableFuture().get());
-                                                        return ac + testEl;
-                                                    });
-                                            return Source.from(Collections.singletonList(pair))
-                                                    .toMat(
-                                                            Flow.<Pair<HttpRequest, Integer>>create()
-                                                                    .mapConcat(p -> Collections.nCopies(p.second(), p.first()))
-                                                                    .mapAsync(PARALLELISM, req2 -> {
-                                                                        return CompletableFuture.supplyAsync(() ->
-                                                                                System.currentTimeMillis()
-                                                                        ).thenCompose(start -> CompletableFuture.supplyAsync(() -> {
-                                                                            CompletionStage<Long> whenResponse = asyncHttpClient()
-                                                                                    .prepareGet(req2.getUri().toString())
-                                                                                    .execute()
-                                                                                    .toCompletableFuture()
-                                                                                    .thenCompose(r ->
-                                                                                            CompletableFuture.completedFuture(System.currentTimeMillis() - start));
-                                                                            return whenResponse;
-                                                                        }));
-                                                                    })
-                                                                    .toMat(fold, Keep.right()), Keep.right()).run(materializer);
-                                        }).map(
-                                                sum -> {
-                                                    Patterns.ask(controlActor, new PutMSG(new javafx.util.Pair<>(data.first(), new javafx.util.Pair<>(data.second(), sum))), 5000);
-                                                    Double middleValue = (double) sum / (double) countInteger;
-                                                    return HttpResponse.create().withEntity(ByteString.fromString(FINAL_ANSWER + middleValue.toString()));
+                                                    return Patterns
+                                                            .ask(
+                                                                    controlActor,
+                                                                    new GetMSG(new javafx.util.Pair<>(data.first(), data.second())),
+                                                                    Duration.ofMillis(TIME_MILLIS)
+                                                            ).thenCompose(r ->
+                                                            {
+                                                                if ((int) r != NO_SUCH_DATA) {
+                                                                    return CompletableFuture.completedFuture((int) r);
+                                                                }
+                                                                // fold for counting all time
+                                                                Sink<CompletionStage<Long>, CompletionStage<Integer>> fold = Sink
+                                                                        .fold(ZERO, (ac, el) -> {
+                                                                            int testEl = (int) (ZERO + el.toCompletableFuture().get());
+                                                                            return ac + testEl;
+                                                                        });
+                                                                return Source.from(Collections.singletonList(pair))
+                                                                        .toMat(
+                                                                                Flow.<Pair<HttpRequest, Integer>>create()
+                                                                                        .mapConcat(p -> Collections.nCopies(p.second(), p.first()))
+                                                                                        .mapAsync(PARALLELISM, req2 -> {
+                                                                                            return CompletableFuture.supplyAsync(() ->
+                                                                                                    System.currentTimeMillis()
+                                                                                            ).thenCompose(start -> CompletableFuture.supplyAsync(() -> {
+                                                                                                CompletionStage<Long> whenResponse = asyncHttpClient()
+                                                                                                        .prepareGet(req2.getUri().toString())
+                                                                                                        .execute()
+                                                                                                        .toCompletableFuture()
+                                                                                                        .thenCompose(r ->
+                                                                                                                CompletableFuture.completedFuture(System.currentTimeMillis() - start));
+                                                                                                return whenResponse;
+                                                                                            }));
+                                                                                        })
+                                                                                        .toMat(fold, Keep.right()), Keep.right()).run(materializer);
+                                                            }).map(
+                                                                    sum -> {
+                                                                        Patterns.ask(controlActor, new PutMSG(new javafx.util.Pair<>(data.first(), new javafx.util.Pair<>(data.second(), sum))), 5000);
+                                                                        Double middleValue = (double) sum / (double) countInteger;
+                                                                        return HttpResponse.create().withEntity(ByteString.fromString(FINAL_ANSWER + middleValue.toString()));
+                                                                    }
+                                                            );
                                                 }
                                         );
-
-                                CompletionStage<HttpResponse> result = source.via(testSink).toMat(Sink.last(), Keep.right()).run(materializer);
-                                return result.toCompletableFuture().get();
-                            } catch (NumberFormatException e) {
-                                e.printStackTrace();
-                                return HttpResponse.create().withEntity(ByteString.fromString(NUMBER_ERROR));
-                            }
-                        } else {
-                            req.discardEntityBytes(materializer);
-                            return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity(PATH_ERROR);
+                            CompletionStage<HttpResponse> result = source.via(testSink).toMat(Sink.last(), Keep.right()).run(materializer);
+                            return result.toCompletableFuture().get();
+                        } catch(NumberFormatException e){
+                            e.printStackTrace();
+                            return HttpResponse.create().withEntity(ByteString.fromString(NUMBER_ERROR));
                         }
                     } else {
                         req.discardEntityBytes(materializer);
-                        return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity(GET_ERROR);
+                        return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity(PATH_ERROR);
                     }
-                });
-        final CompletionStage<ServerBinding> binding = http.bindAndHandle(
-                routeFlow,
-                ConnectHttp.toHost(LOCALHOST, LOCALHOST_PORT),
-                materializer
-        );
+                } else{
+            req.discardEntityBytes(materializer);
+            return HttpResponse.create().withStatus(StatusCodes.NOT_FOUND).withEntity(GET_ERROR);
+        }
+    });
+    final CompletionStage<ServerBinding> binding = http.bindAndHandle(
+            routeFlow,
+            ConnectHttp.toHost(LOCALHOST, LOCALHOST_PORT),
+            materializer
+    );
         System.out.println(SERVER_WELCOME_MSG);
         System.in.read();
         binding
                 .thenCompose(ServerBinding::unbind)
-                .thenAccept(unbound -> system.terminate());
-    }
+            .
+
+    thenAccept(unbound ->system.terminate());
+}
 }
